@@ -1,1 +1,83 @@
+server:
+  port: 8005
+#  context-path: /
+spring:
+  application:
+    name: microservice-functionlistdefine
+  #数据源基本配置
+  datasource:
+    username: scott
+    password: 123456
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@//127.0.0.1:1521/oracle127
+    type: com.alibaba.druid.pool.DruidDataSource
+    #数据源其他配置
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+#   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+#  devtools:
+#    restart:
+#      enabled: true
 
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*Mapper.xm
+  #实体扫描，多个package用逗号或者分号分隔
+  #typeAliasesPackage: com.joyin.fyzg.entity.parser.vo
+  #typeEnumsPackage: com.joyin.fyzg.entity.parser.enums.**.enum
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: id_worker
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      #驼峰下划线转换
+      column-underline: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+#      db-type: h2
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+eureka:
+  client: #客户端注册进eureka服务列表内
+    service-url:
+      defaultZone: http://127.0.0.1:7001/eureka
+      #defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: microservice-functionlistdefine
+    prefer-ip-address: true     #访问路径可以显示IP地址
+
+swagger:
+  enabled: true
+  basePackage: com.joyin.fyzg
+  title: "功能列表定义"
+  description: "功能列表定义接口文档"
+  version: 1.0
+
+info:
+  app.name: microservice-functionlistdefine
+  company.name: joyintech
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
